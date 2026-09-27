@@ -1,0 +1,65 @@
+﻿
+    <Window x:Class="TicTacToe.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:TicTacToe.ViewModel"
+        Title="Хрестики-нулики"
+        Height="520" Width="480"
+        WindowStartupLocation="CenterScreen">
+
+        <Window.DataContext>
+            <vm:GameViewModel/>
+        </Window.DataContext>
+
+        <Grid Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock Text="Складність:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <ComboBox ItemsSource="{Binding DifficultyOptions}"
+                      DisplayMemberPath="DisplayName"
+                      SelectedValuePath="Value"
+                      SelectedValue="{Binding Difficulty}"
+                      Width="280"/>
+            </StackPanel>
+
+            <Button Grid.Row="1"
+                Content="Нова гра"
+                Command="{Binding NewGameCommand}"
+                Padding="12,6"
+                HorizontalAlignment="Left"
+                Margin="0,0,0,12"/>
+
+            <ItemsControl Grid.Row="2" ItemsSource="{Binding Cells}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="{Binding BoardSize}"
+                                 Columns="{Binding BoardSize}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Symbol}"
+                            Command="{Binding MoveCommand}"
+                            IsEnabled="{Binding IsEnabled}"
+                            FontSize="40"
+                            FontWeight="Bold"
+                            Margin="4"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock Grid.Row="3"
+                   Text="{Binding StatusMessage}"
+                   FontSize="16"
+                   Margin="0,12,0,0"
+                   TextWrapping="Wrap"/>
+        </Grid>
+    </Window>
